@@ -5,9 +5,9 @@ from textblob import Word
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix
-
-    python -m textblob.download_corpora
+from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, matthews_corrcoef
+import time as time
+    # python -m textblob.download_corpora
 def clean_str(string):
     """
     Tokenization/string cleaning for datasets.
@@ -50,9 +50,12 @@ print ("train size:", X_train.shape)
 print("test size:", X_test.shape)
 no_topics = 10
 
+start1 = time.time()
 lda_model = LatentDirichletAllocation(n_components=no_topics, random_state=0)
 lda_train = lda_model.fit_transform(X_train)
 lda_test = lda_model.transform(X_test)
+end1 = time.time()
+
 model = RandomForestClassifier(n_estimators=300, max_depth=150,n_jobs=1)
 model.fit(X_train, y_train)
 
@@ -67,3 +70,5 @@ print("F1 Score:"+str(f1_score(y_test, y_pred, average='macro')))
 print("Precision:"+str(precision_score(y_test,y_pred, average='macro')))
 print("Recall:"+str(recall_score(y_test,y_pred, average='macro')))
 print("\nAccuracy: ",acc)
+print("Time:"+str((end1-start1)))
+print("Matthew's correlation coefficient:"+str(matthews_corrcoef(newsgroups_test.target,pred)))

@@ -61,6 +61,7 @@ print("test size:", X_test.shape)
 
 no_topics = 10
 
+start1 = time.time()
 lda_model = TruncatedSVD(n_components=no_topics,
                          algorithm='randomized',
                          n_iter=50)
@@ -69,6 +70,7 @@ lda_test = lda_model.transform(X_test)
 scaler = MinMaxScaler()        # Scale features to make them positive
 lda_train = scaler.fit_transform(lda_train)
 lda_test = scaler.transform(lda_test)
+end1 = time.time()
 
 model = RandomForestClassifier(n_estimators=50, max_depth=10,n_jobs=1)
 model.fit(lda_train, y_train)
@@ -84,3 +86,5 @@ print("F1 Score:"+str(f1_score(y_test, y_pred, average='macro')))
 print("Precision:"+str(precision_score(y_test,y_pred, average='macro')))
 print("Recall:"+str(recall_score(y_test,y_pred, average='macro')))
 print("\nAccuracy: ",acc)
+print("Time:"+str((end1-start1)))
+print("Matthew's correlation coefficient:"+str(matthews_corrcoef(newsgroups_test.target,pred)))

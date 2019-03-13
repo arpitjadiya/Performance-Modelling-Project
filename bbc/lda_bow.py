@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, matthews_corrcoef
+import time as time
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 
   #  python -m textblob.download_corpora
@@ -71,6 +72,5 @@ print("F1 Score:"+str(f1_score(y_test, y_pred, average='macro')))
 print("Precision:"+str(precision_score(y_test,y_pred, average='macro')))
 print("Recall:"+str(recall_score(y_test,y_pred, average='macro')))
 print("\nAccuracy: ",acc)
-
 print("Time:"+str((end1-start1)))
 print("Matthew's correlation coefficient:"+str(matthews_corrcoef(newsgroups_test.target,pred)))
