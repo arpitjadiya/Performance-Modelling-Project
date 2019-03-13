@@ -44,7 +44,7 @@ def clean_str(string):
     string = re.sub(r"\s{2,}", " ", string)
     return string.strip().lower()
 
-data = pd.read_csv('../dataset/dataset.csv')
+data = pd.read_csv('dataset.csv')
 x = data['news'].tolist()
 y = data['type'].tolist()
 
