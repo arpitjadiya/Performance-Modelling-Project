@@ -3,10 +3,11 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 from textblob import Word
 import numpy as np
+import time as time
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix
-from sklearn.metrics import precision_score,recall_score, f1_score
+from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, f1_score, matthews_corrcoef
+from sklearn.metrics import precision_score,recall_score
 from sklearn.decomposition import NMF, LatentDirichletAllocation, TruncatedSVD
 from sklearn.preprocessing import MinMaxScaler
 
@@ -47,8 +48,8 @@ for index,value in enumerate(x_test):
     print("processing data:",index)
     x_test[index] = ' '.join([Word(word).lemmatize() for word in clean_str(value).split()])
 
-#vect = TfidfVectorizer(stop_words='english',min_df=2)
-vect = CountVectorizer(stop_words='english',min_df=2)
+vect = TfidfVectorizer(stop_words='english',min_df=2)
+# vect = CountVectorizer(stop_words='english',min_df=2)
 
 X_train = vect.fit_transform(x)
 y_train = np.array(y)
@@ -79,12 +80,12 @@ y_pred = model.predict(lda_test)
 c_mat = confusion_matrix(y_test,y_pred)
 kappa = cohen_kappa_score(y_test,y_pred)
 acc = accuracy_score(y_test,y_pred)
-print("Confusion Matrix:\n", c_mat)
-print("\nKappa: ",kappa)
 
-print("F1 Score:"+str(f1_score(y_test, y_pred, average='macro')))
+print("Confusion Matrix:\n", c_mat)
 print("Precision:"+str(precision_score(y_test,y_pred, average='macro')))
 print("Recall:"+str(recall_score(y_test,y_pred, average='macro')))
-print("\nAccuracy: ",acc)
+print("F1 Score:"+str(f1_score(y_test, y_pred, average='macro')))
+print("Accuracy: ",acc)
 print("Time:"+str((end1-start1)))
-print("Matthew's correlation coefficient:"+str(matthews_corrcoef(newsgroups_test.target,pred)))
+print("Matthew's correlation coefficient:"+str(matthews_corrcoef(y_test,y_pred)))
+print("Kappa:",kappa)
